@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Term::ReadKey;
+
+my ($x, $y, $px, $py) = GetTerminalSize;
+print "${x}x$y (${px}x$py)\n";
+
