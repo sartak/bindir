@@ -1,0 +1,17 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use REST::Google::Translate;
+
+REST::Google::Translate->http_referer('http://sartak.org');
+
+my $res = REST::Google::Translate->new(
+    q        => "@ARGV" || do { join "\n", <> },
+    langpair => 'ja|en',
+);
+
+die $res->responseStatus if $res->responseStatus != 200;
+
+binmode(\*STDOUT, ':utf8');
+print $res->responseData->translatedText . "\n";
+
