@@ -6,7 +6,6 @@ use Encode 'decode_utf8';
 my $dic = Lingua::JP::Kanjidic->new("$ENV{HOME}/.kanjidic");
 
 binmode(\*STDOUT, ':utf8');
-$\ = "\n";
 
 my %is_sought = map { $_ => 1 }
                 grep { /\p{Han}/ }
@@ -14,8 +13,13 @@ my %is_sought = map { $_ => 1 }
                 decode_utf8("@ARGV");
 
 while (my $kanji = $dic->next) {
-    print $kanji->kanji . ': ' . join(', ', @{ $kanji->meaning || [] })
-        if $is_sought{$kanji->kanji};
+    next if !$is_sought{$kanji->kanji};
+
+    print $kanji->kanji;
+    print ' (' . $kanji->heiseg . ')' if $kanji->heiseg;
+    print ': ';
+    print join(', ', @{ $kanji->meaning || ["???"] });
+    print "\n";
 }
 
 
