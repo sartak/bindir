@@ -14,6 +14,7 @@ my %is_sought = map { $_ => 1 }
 
 while (my $kanji = $dic->next) {
     next if !$is_sought{$kanji->kanji};
+    delete $is_sought{$kanji};
 
     print $kanji->kanji;
     print ' (' . $kanji->heiseg . ')' if $kanji->heiseg;
@@ -22,4 +23,7 @@ while (my $kanji = $dic->next) {
     print "\n";
 }
 
+for my $kanji (keys %is_sought) {
+    print "$kanji: ???\n";
+}
 
