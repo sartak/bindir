@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Lingua::JP::Kanjidic;
+use Encode 'decode_utf8';
+my $dic = Lingua::JP::Kanjidic->new("$ENV{HOME}/.kanjidic");
+
+binmode(\*STDOUT, ':utf8');
+$\ = "\n";
+
+my %is_sought = map { $_ => 1 }
+                grep { /\p{Han}/ }
+                split //,
+                decode_utf8("@ARGV");
+
+while (my $kanji = $dic->next) {
+    print $kanji->kanji . ': ' . join(', ', @{ $kanji->meaning || [] })
+        if $is_sought{$kanji->kanji};
+}
+
+
