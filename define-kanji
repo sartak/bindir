@@ -13,10 +13,11 @@ my %is_sought = map { $_ => 1 }
                 decode_utf8("@ARGV");
 
 while (my $kanji = $dic->next) {
-    next if !$is_sought{$kanji->kanji};
-    delete $is_sought{$kanji};
+    my $character = $kanji->kanji;
+    next if !$is_sought{$character};
+    delete $is_sought{$character};
 
-    print $kanji->kanji;
+    print $character;
     print ' (' . $kanji->heiseg . ')' if $kanji->heiseg;
     print ': ';
     print join(', ', @{ $kanji->meaning || ["???"] });
