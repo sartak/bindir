@@ -22,6 +22,8 @@ while (my $kanji = $dic->next) {
     print ': ';
     print join(', ', @{ $kanji->meaning || ["???"] });
     print "\n";
+
+    last if keys %is_sought == 0;
 }
 
 for my $kanji (keys %is_sought) {
