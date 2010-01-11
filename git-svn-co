@@ -1,0 +1,17 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use autodie;
+
+my $url = shift or die "usage: $0 url [directory]\n";
+my $directory = shift || do { $url =~ m{.*/(.+)}; $1 };
+
+die "Directory $directory already exists\n" if -e $directory;
+
+mkdir $directory;
+chdir $directory;
+
+system(qw(git svn init), $url);
+system(qw(git svn fetch));
+system(qw(git reset --hard));
+
