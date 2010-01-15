@@ -1,0 +1,14 @@
+#!/usr/bin/osascript
+on run argv
+        tell application "iTerm"
+                activate
+                make new terminal
+                tell the last terminal
+                    make new session at end of sessions
+                    tell last session
+                        exec command "/usr/local/bin/vim " & item 1 of argv
+                    end tell
+                end tell
+        end tell
+end run
+
