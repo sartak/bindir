@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+binmode(\*STDOUT, ':utf8');
+$\ = "\n";
+
+print map chr hex, @ARGV;
+
