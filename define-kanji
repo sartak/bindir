@@ -7,26 +7,19 @@ my $dic = Lingua::JP::Kanjidic->new("$ENV{HOME}/.kanjidic");
 
 binmode(\*STDOUT, ':utf8');
 
-my %is_sought = map { $_ => 1 }
-                grep { /\p{Han}/ }
-                split //,
-                decode_utf8("@ARGV");
+for my $kanji (grep { /\p{Han}/ } split //, decode_utf8("@ARGV")) {
+    my $definition = $dic->lookup($kanji);
 
-while (my $kanji = $dic->next) {
-    my $character = $kanji->kanji;
-    next if !$is_sought{$character};
-    delete $is_sought{$character};
+    print $kanji;
+    if ($definition) {
+        print ' (' . $definition->heiseg . ')' if $definition->heiseg;
+        print ': ';
+        print join(', ', @{ $definition->meaning || ["???"] });
+    }
+    else {
+        print ': ???';
+    }
 
-    print $character;
-    print ' (' . $kanji->heiseg . ')' if $kanji->heiseg;
-    print ': ';
-    print join(', ', @{ $kanji->meaning || ["???"] });
     print "\n";
-
-    last if keys %is_sought == 0;
-}
-
-for my $kanji (keys %is_sought) {
-    print "$kanji: ???\n";
 }
 
