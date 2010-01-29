@@ -1,10 +1,22 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
+use utf8;
 use Lingua::JA::Romanize::Japanese;
+use Lingua::JP::Kanjidic;
 use Encode 'decode_utf8';
+my $dic = Lingua::JP::Kanjidic->new("$ENV{HOME}/.kanjidic");
+
+$\ = "\n";
 
 my $text = decode_utf8 "@ARGV";
 binmode(\*STDOUT, ':utf8');
-print Lingua::JA::Romanize::Japanese->new->chars($text) . "\n";
+print Lingua::JA::Romanize::Japanese->new->chars($text);
+
+if ($text =~ /^\p{Han}$/) {
+    my $entry = $dic->lookup($text) or exit;
+
+    print join '、', @{ $entry->{katakana} };
+    print join '、', @{ $entry->{hiragana} };
+}
 
