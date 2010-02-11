@@ -12,7 +12,17 @@ for my $kanji (grep { /\p{Han}/ } split //, decode_utf8("@ARGV")) {
 
     print $kanji;
     if ($definition) {
-        print ' (' . $definition->heiseg . ')' if $definition->heiseg;
+        my $heisig = $definition->heiseg;
+        my $skip = $definition->skip;
+
+        if ($heisig || $skip) {
+            print ' (';
+            print $heisig if $heisig;
+            print ' ' if $heisig && $skip;
+            print $skip if $skip;
+            print ')';
+        }
+
         print ': ';
         print join(', ', @{ $definition->meaning || ["???"] });
     }
