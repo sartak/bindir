@@ -15,13 +15,13 @@ for my $kanji (grep { /\p{Han}/ } split //, decode_utf8("@ARGV")) {
         my $heisig = $definition->heiseg;
         my $skip = $definition->skip;
 
-        if ($heisig || $skip) {
-            print ' (';
-            print $heisig if $heisig;
-            print ' ' if $heisig && $skip;
-            print $skip if $skip;
-            print ')';
-        }
+        print ' (';
+        print $definition->strokes;
+        print ' ' if $heisig || $skip;
+        print $heisig if $heisig;
+        print ' ' if $heisig && $skip;
+        print $skip if $skip;
+        print ')';
 
         print ': ';
         print join(', ', @{ $definition->meaning || ["???"] });
