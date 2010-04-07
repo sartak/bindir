@@ -4,9 +4,11 @@ use warnings;
 
 print "Translation: ";
 system("ja2en", @ARGV);
+print "\n";
 
 print "Transliteration: ";
 system("transliterate", @ARGV);
+print "\n";
 
 print "Kanji: ";
 system("define-kanji", @ARGV);
