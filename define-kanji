@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 use Lingua::JP::Kanjidic;
+use Lingua::JA::Heisig -learned;
 use Encode 'decode_utf8';
 my $dic = Lingua::JP::Kanjidic->new("$ENV{HOME}/.kanjidic");
 
@@ -18,7 +19,16 @@ for my $kanji (grep { /\p{Han}/ } split //, decode_utf8("@ARGV")) {
         print ' (';
         print $definition->strokes;
         print ' ' if $heisig || $skip;
-        print $heisig if $heisig;
+        if ($heisig) {
+            if (-t STDOUT) {
+                print is_learned($kanji) ? "\e[1;32m" : "\e[1;31m";
+                print $heisig;
+                print "\e[m";
+            }
+            else {
+                print $heisig;
+            }
+        }
         print ' ' if $heisig && $skip;
         print $skip if $skip;
         print ')';
