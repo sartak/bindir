@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+print "Translation: ";
+system("ja2en", @ARGV);
+
+print "Transliteration: ";
+system("transliterate", @ARGV);
+
+print "Kanji: ";
+system("define-kanji", @ARGV);
+
