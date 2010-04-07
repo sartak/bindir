@@ -10,6 +10,6 @@ print "Transliteration: ";
 system("transliterate", @ARGV);
 print "\n";
 
-print "Kanji: ";
+print "Kanji:\n";
 system("define-kanji", @ARGV);
 
