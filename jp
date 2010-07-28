@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+die "No input specified\n" if @ARGV == 0;
+
 print "Translation: ";
 system("ja2en", @ARGV);
 print "\n";
