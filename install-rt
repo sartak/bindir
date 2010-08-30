@@ -1,0 +1,3 @@
+#!/bin/sh
+NAME=$1
+sudo rm /opt/rt3 && sudo ln -vis /opt/rt/$NAME /opt/rt3 && ./configure.ac && ./configure --prefix=/opt/rt/$NAME --enable-devel-mode --enable-graphviz --enable-gd --enable-gpg --with-db-type=Pg --with-db-database=$NAME --with-my-user-group && make install && rm -rf /opt/rt3/var
