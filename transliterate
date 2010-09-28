@@ -16,7 +16,7 @@ print Lingua::JA::Romanize::Japanese->new->chars($text);
 if ($text =~ /^\p{Han}$/) {
     my $entry = $dic->lookup($text) or exit;
 
-    print join '、', @{ $entry->{katakana} };
-    print join '、', @{ $entry->{hiragana} };
+    print join '、', @{ $entry->{katakana} } if $entry->{katakana};
+    print join '、', @{ $entry->{hiragana} } if $entry->{hiragana};
 }
 
