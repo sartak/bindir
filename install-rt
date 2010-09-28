@@ -1,4 +1,4 @@
 #!/bin/sh
 NAME=$1
 DBNAME=`echo "rt_$1" | perl -ple 's/-/_/g; s/\.//g'`
-rm -f /opt/rt3 && ln -vis /opt/rt/$NAME /opt/rt3 && ./configure.ac && ./configure --prefix=/opt/rt/$NAME --enable-devel-mode --enable-graphviz --enable-gd --enable-gpg --with-db-type=Pg --with-db-database=$DBNAME --with-db-dba=sartak --with-my-user-group && make install && rm -rf /opt/rt3/var
+rm -f /opt/rt3 && ln -vis /opt/rt/$NAME /opt/rt3 && ./configure.ac && ./configure --prefix=/opt/rt/$NAME --enable-graphviz --enable-gd --enable-gpg --with-db-type=Pg --with-db-database=$DBNAME --with-db-dba=sartak --with-my-user-group && make install && rm -rf /opt/rt3/var
