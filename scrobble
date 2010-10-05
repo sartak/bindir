@@ -4,6 +4,7 @@ use warnings;
 use Net::LastFM::Submission;
 use YAML;
 use Getopt::Whatever;
+use Encode;
 
 my $submit = Net::LastFM::Submission->new(
     %{ YAML::LoadFile(glob "~/.last.fm") }
@@ -14,5 +15,5 @@ $submit->handshake;
 die "usage: $0 --artist='whatever' --title='whatever'\n"
     unless $ARGV{artist} && $ARGV{title};
 
-$submit->submit(time => time, %ARGV);
+$submit->submit(time => time, map { decode_utf8($_) } %ARGV);
 
