@@ -1,13 +1,13 @@
 #!/bin/sh
-NAME="$1_pg"
+DIRNAME="$1_pg"
 DBNAME=`echo "rt_$1" | perl -ple 's/-/_/g; s/\.//g'`
 
 ./configure.ac
-./configure --prefix=/opt/rt/$NAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak
+./configure --prefix=/opt/rt/$DIRNAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak
 
 make install
 
 rm -f /opt/rt3
-ln -vis /opt/rt/$NAME /opt/rt3
+ln -vis /opt/rt/$DIRNAME /opt/rt3
 
 rm -rf /opt/rt3/var/mason_data
