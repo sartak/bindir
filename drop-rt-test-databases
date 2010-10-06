@@ -1,2 +1,3 @@
 #!/bin/sh
 echo '\l' | psql -d postgres | grep rt3test | f 0 | perl -ple '$_ = "drop database $_;"' | psql -d postgres
+echo 'show databases;' | sudo mysql | grep rt3test | perl -nle 'system("yes | sudo mysqladmin drop $_")'
