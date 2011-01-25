@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -L http://cpanmin.us | perl - App::cpanminus
