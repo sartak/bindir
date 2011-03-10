@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 BRANCH=`git branch | grep '^*' | head -n1 | cut -c 3- | tr / -`
 RTNAME=${1:-$BRANCH}
 DBNAME=`echo "rt_$RTNAME" | perl -ple 's/-/_/g; s/\.//g'`
@@ -14,3 +14,7 @@ rm -f /opt/rt3
 ln -vis /opt/rt/$DIRNAME /opt/rt3
 
 rm -rf /opt/rt3/var/mason_data
+
+echo
+echo "Installed \e[1;32m$RTNAME\e[m into /opt/rt/$DIRNAME using Postgres database $DBNAME"
+
