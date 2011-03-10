@@ -33,6 +33,28 @@ if cmp /opt/rt3/etc/RT_SiteConfig.pm etc/RT_SiteConfig.pm &> /dev/null
     then cp ~/devel/bindir/data/RT_SiteConfig.pm /opt/rt3/etc/RT_SiteConfig.pm
 fi
 
+# make initdb
+MAKE_INITDB=1
+case "$DBTYPE" in
+    sqlite)
+        if [[ -f /opt/rt3/var/$DBNAME ]]
+            then MAKE_INITDB=0
+        fi
+    ;;
+    pg)
+        if echo '\l' | psql -d postgres | grep -q $DBNAME
+            then MAKE_INITDB=0
+        fi
+    ;;
+    mysql)
+        MAKE_INITDB=0
+    ;;
+esac
+
+if [[ $MAKE_INITDB != 0 ]]
+    then make initdb
+fi
+
 echo
 echo "Installed \e[1;32m$RTNAME\e[m into $FULLDIR using $DBTYPE database $DBNAME"
 
