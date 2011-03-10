@@ -47,7 +47,9 @@ case "$DBTYPE" in
         fi
     ;;
     mysql)
-        MAKE_INITDB=0
+        if echo 'show databases;' | sudo mysql | grep -q $DBNAME
+            then MAKE_INITDB=0
+        fi
     ;;
 esac
 
