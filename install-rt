@@ -27,6 +27,11 @@ ln -vis /opt/rt/$DIRNAME /opt/rt3
 
 rm -rf /opt/rt3/var/mason_data
 
+# if the SiteConfig is what ships with RT, replace it with my own
+if cmp /opt/rt3/etc/RT_SiteConfig.pm etc/RT_SiteConfig.pm &> /dev/null
+    then cp ~/devel/bindir/data/RT_SiteConfig.pm /opt/rt3/etc/RT_SiteConfig.pm
+fi
+
 echo
 echo "Installed \e[1;32m$RTNAME\e[m into /opt/rt/$DIRNAME using $DBTYPE database $DBNAME"
 
