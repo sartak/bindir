@@ -1,6 +1,9 @@
 #!/bin/sh
-DIRNAME="$1_pg"
-DBNAME=`echo "rt_$1" | perl -ple 's/-/_/g; s/\.//g'`
+BRANCH=`git branch | grep '^*' | head -n1 | cut -c 3- | tr / -`
+RTNAME=${1:-$BRANCH}
+DBNAME=`echo "rt_$RTNAME" | perl -ple 's/-/_/g; s/\.//g'`
+DIRNAME="${RTNAME}_pg"
+
 
 ./configure.ac
 ./configure --prefix=/opt/rt/$DIRNAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak

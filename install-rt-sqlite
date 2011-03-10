@@ -1,6 +1,9 @@
 #!/bin/sh
-DIRNAME="$1_sqlite"
-DBNAME=`echo "rt_$1" | perl -ple 's/-/_/g; s/\.//g'`
+BRANCH=`git branch | grep '^*' | head -n1 | cut -c 3- | tr / -`
+RTNAME=${1:-$BRANCH}
+DBNAME=`echo "rt_$RTNAME" | perl -ple 's/-/_/g; s/\.//g'`
+DIRNAME="${RTNAME}_sqlite"
+
 
 ./configure.ac
 ./configure --prefix=/opt/rt/$DIRNAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=SQLite
