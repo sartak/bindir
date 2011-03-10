@@ -4,26 +4,27 @@ BRANCH=`git branch | grep '^*' | head -n1 | cut -c 3- | tr / -`
 RTNAME=${2:-$BRANCH}
 DBNAME=`echo "rt_$RTNAME" | perl -ple 's/-/_/g; s/\.//g'`
 DIRNAME="${RTNAME}_$DBTYPE"
+FULLDIR=/opt/rt/$DIRNAME
 
 
 ./configure.ac
 
 case "$DBTYPE" in
     sqlite)
-        ./configure --prefix=/opt/rt/$DIRNAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=SQLite
+        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=SQLite
     ;;
     pg)
-        ./configure --prefix=/opt/rt/$DIRNAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak
+        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak
     ;;
     mysql)
-        ./configure --prefix=/opt/rt/$DIRNAME --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=mysql --with-db-dba=root
+        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=mysql --with-db-dba=root
     ;;
 esac
 
 make install
 
 rm -f /opt/rt3
-ln -vis /opt/rt/$DIRNAME /opt/rt3
+ln -vis $FULLDIR /opt/rt3
 
 rm -rf /opt/rt3/var/mason_data
 
@@ -33,5 +34,5 @@ if cmp /opt/rt3/etc/RT_SiteConfig.pm etc/RT_SiteConfig.pm &> /dev/null
 fi
 
 echo
-echo "Installed \e[1;32m$RTNAME\e[m into /opt/rt/$DIRNAME using $DBTYPE database $DBNAME"
+echo "Installed \e[1;32m$RTNAME\e[m into $FULLDIR using $DBTYPE database $DBNAME"
 
