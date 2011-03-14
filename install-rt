@@ -54,7 +54,7 @@ case "$DBTYPE" in
 esac
 
 if [[ $MAKE_INITDB != 0 ]]
-    then make initdb
+    then yes | make initdb
 fi
 
 echo
