@@ -6,18 +6,17 @@ DBNAME=`echo "rt_$RTNAME" | perl -ple 's/-/_/g; s/\.//g'`
 DIRNAME="${RTNAME}_$DBTYPE"
 FULLDIR=/opt/rt/$DIRNAME
 
-
 ./configure.ac
 
 case "$DBTYPE" in
     sqlite)
-        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=SQLite
+        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-devel-mode --with-db-database=$DBNAME --with-db-type=SQLite
     ;;
     pg)
-        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak
+        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-devel-mode --with-db-database=$DBNAME --with-db-type=Pg --with-db-dba=sartak
     ;;
     mysql)
-        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-db-database=$DBNAME --with-db-type=mysql --with-db-dba=root
+        ./configure --prefix=$FULLDIR --enable-graphviz --enable-gd --enable-gpg --with-my-user-group --with-devel-mode --with-db-database=$DBNAME --with-db-type=mysql --with-db-dba=root
     ;;
 esac
 
