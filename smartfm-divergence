@@ -1,0 +1,26 @@
+#!/usr/bin/env perl
+use 5.12.0;
+use warnings;
+use File::Temp;
+use autodie;
+use IPC::System::Simple 'run';
+
+my $ankidir = "$ENV{HOME}/Documents/Anki";
+
+my $dir = File::Temp->newdir;
+
+# find smart.fm cards from my deck
+run(qq{
+    echo "select sentence.value from fields as sentence join fields as source on (sentence.factId = source.factId) where sentence.fieldModelId=4775683831775348908 and source.fieldModelId=-8932143135470038837 and source.value like '%Smart.fm%' order by sentence.value;" | sqlite3 $ankidir/Japanese.anki > $dir/my-cards.txt
+});
+
+# find unsuspended smart.fm
+run(qq{
+    echo "select value from fields join facts on (fields.factId = facts.id) join cards on (cards.factId = facts.id) where fields.fieldModelId=-2643915168054796895 and cards.type>0 order by fields.value;" | sqlite3 $ankidir/core2kcore6k.anki > $dir/smartfm.txt
+});
+
+# diff! use system instead of run because diff uses status codes for non-errors
+system(qq{
+    diff -ub $dir/my-cards.txt $dir/smartfm.txt
+});
+
