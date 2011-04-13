@@ -2,7 +2,6 @@
 use 5.12.0;
 use warnings;
 use File::Temp;
-use autodie;
 use IPC::System::Simple 'run';
 
 my $ankidir = "$ENV{HOME}/Documents/Anki";
