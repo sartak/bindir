@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Weather::Google;
 
-my $weather = Weather::Google->new('02141');
+my $weather = Weather::Google->new(shift || '02144');
 
 my $days = $weather->forecast_conditions;
 for my $day (@$days) {
