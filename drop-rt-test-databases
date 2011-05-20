@@ -1,3 +1,5 @@
 #!/bin/sh
 echo '\l' | psql -d postgres | grep 'rt.test' | f 0 | perl -ple '$_ = "drop database $_;"' | psql -d postgres
+echo '\du' | psql -d postgres | grep urt | f 0 | xargs -n1 dropuser
+
 echo 'show databases;' | sudo mysql | grep 'rt.test' | perl -nle 'system("yes | sudo mysqladmin drop $_")'
