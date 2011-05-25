@@ -3,7 +3,7 @@ BRANCH=`git branch | grep '^*' | head -n1 | cut -c 3- | tr / -`
 
 # install based on tag like rt-4.0.0
 if [[ $BRANCH == "(no branch)" ]]
-    then BRANCH=`git describe | perl -ple 's/^rt-//'`
+    then BRANCH=`git describe --tags | perl -ple 's/^rt-//'`
 fi
 
 DBTYPE=${1:-sqlite}
