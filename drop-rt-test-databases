@@ -1,5 +1,6 @@
 #!/bin/sh
 echo '\l' | psql -d postgres | grep 'rt.test' | f 0 | perl -ple '$_ = "drop database $_;"' | psql -d postgres
-echo '\du' | psql -d postgres | grep urt | f 0 | xargs -n1 dropuser
+echo "select usename from pg_user where usename like 'urt%'" | psql -d postgres | grep urt | cut -c 2- | perl -ple '$_="drop role $_;"' | psql -d postgres
 
 echo 'show databases;' | sudo mysql | grep 'rt.test' | perl -nle 'system("yes | sudo mysqladmin drop $_")'
+echo "select User from user where User like 'urt%';" | sudo mysql mysql | grep urt | perl -ple '$_ = "drop user $_\@localhost;"' | sudo mysql mysql
