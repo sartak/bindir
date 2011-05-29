@@ -13,13 +13,17 @@ echo "select kanji.value, sentence.value
         and kanji.fieldModelId=7694462791390410032
         and reading.value=''
         and cards.type>0
-    order by kanji.value;" | sqlite3 ~/Documents/Anki/Japanese.anki
+        order by kanji.value;" | sqlite3 ~/Documents/Anki/Japanese.anki | perl5i -nle 'our (%seen, $i); my ($kanji, $sentence) = /(.)\|(.+)/; print "\n\n".++$i.". $kanji:" if $seen{$kanji}++==0; print "  $sentence"'
 
-# sample output:
-# 丈|大丈夫かなぁ
-# 丈|大丈夫。払いますから。
-# 令|たとえ神の命令でもな！
-# 仮|ここではExample::Softwareというモジュールをテストすると仮定します
-# etc
-
-
+# example output
+# 35. 球:
+#   皆の者よ ここは地球という星だ
+#   ガラスの球をみつけた
+#   おまえどこからきた　地球か？
+#
+# 38. 直:
+#  直ぐ行きます。
+#  正直ねむい
+#
+# 48. 縄:
+#  沖縄はずっと南の方だ
