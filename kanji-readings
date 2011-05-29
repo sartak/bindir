@@ -1,0 +1,25 @@
+#!/bin/sh
+# find unsuspended sentences which contain kanji for which the reading field is empty
+# so I can add that reading field
+
+echo "select kanji.value, sentence.value
+    from fields as sentence
+        join fields as kanji on (sentence.value like ('%'||kanji.value||'%'))
+        join fields as reading on (kanji.factId = reading.factId)
+        join cards on (cards.factId = sentence.factId)
+    where
+        reading.fieldModelId=1870991842743010604
+        and sentence.fieldModelId=4775683831775348908
+        and kanji.fieldModelId=7694462791390410032
+        and reading.value=''
+        and cards.type>0
+    order by kanji.value;" | sqlite3 ~/Documents/Anki/Japanese.anki
+
+# sample output:
+# 丈|大丈夫かなぁ
+# 丈|大丈夫。払いますから。
+# 令|たとえ神の命令でもな！
+# 仮|ここではExample::Softwareというモジュールをテストすると仮定します
+# etc
+
+
