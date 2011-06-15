@@ -12,6 +12,7 @@ echo "select kanji.value, sentence.value
         reading.fieldModelId=1870991842743010604
         and sentence.fieldModelId=4775683831775348908
         and kanji.fieldModelId=7694462791390410032
+        and kanji_card.cardModelId=941308553078584626
         and reading.value=''
         and sentence_card.type>0
         order by kanji_card.created;" | sqlite3 ~/Documents/Anki/Japanese.anki | perl5i -nle 'our (%seen, $i); my ($kanji, $sentence) = /(.)\|(.+)/; print "\n\n".++$i.". $kanji:" if $seen{$kanji}++==0; print "  $sentence"'
