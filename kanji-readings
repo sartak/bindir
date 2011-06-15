@@ -15,7 +15,12 @@ echo "select kanji.value, sentence.value
         and kanji_card.cardModelId=941308553078584626
         and reading.value=''
         and sentence_card.type>0
-        order by kanji_card.created;" | sqlite3 ~/Documents/Anki/Japanese.anki | perl5i -nle 'our (%seen, $i); my ($kanji, $sentence) = /(.)\|(.+)/; print "\n\n".++$i.". $kanji:" if $seen{$kanji}++==0; print "  $sentence"'
+        order by kanji_card.created;" | sqlite3 ~/Documents/Anki/Japanese.anki | perl5i -nle '
+our (%seen, $i);
+my ($kanji, $sentence) = /^(.)\|(.+)$/;
+print "\n\n".++$i.". $kanji:" if $seen{$kanji}++ == 0;
+print "  $sentence";
+'
 
 # example output
 # 35. 球:
