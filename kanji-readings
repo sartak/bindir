@@ -19,7 +19,16 @@ our (%seen, $i);
 my ($kanji, $sentence) = /^(.)\|(.+)$/;
 print "\n\n".++$i.". $kanji:" if $seen{$kanji}++ == 0;
 print "  $sentence";
-'
+';
+
+echo;
+
+echo "select count()
+    from fields as reading
+    where
+        reading.fieldModelId=1870991842743010604
+        group by (reading.value = '');
+        " | sqlite3 ~/Documents/Anki/Japanese.anki | perl -e 'my ($with_reading, $without_reading) = map { chomp; $_ } <>; my $kanji = $with_reading + $without_reading; printf "Coverage: %d/%d (%.2f%%)\n", $with_reading, $kanji, 100*$with_reading/$kanji';
 
 # example output
 # 35. 球:
