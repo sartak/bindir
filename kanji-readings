@@ -17,7 +17,7 @@ echo "select kanji.value, sentence.value
         order by kanji_fact.created;" | sqlite3 ~/Documents/Anki/Japanese.anki | perl5i -nle '
 our (%seen, $i);
 my ($kanji, $sentence) = /^(.)\|(.+)$/;
-print "\n\n".++$i.". $kanji:" if $seen{$kanji}++ == 0;
+print "\n\n".++$i.". \e[35m$kanji\e[m:" if $seen{$kanji}++ == 0;
 $sentence =~ s/(\p{Han}*)($kanji)(\p{Han}*)/\e[36m$1\e[35m$2\e[36m$3\e[m/g;
 print "  $sentence";
 ';
