@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -s 192.168.1.1 | grep -Po '(?<=battery).(?=\.gif)' | awk '{ print 100*$1/4  "%" }'
