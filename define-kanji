@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use Lingua::JP::Kanjidic;
-use Lingua::JA::Heisig -learned;
+use Lingua::JA::Heisig -learned, 'heisig_number';
 use Encode 'decode_utf8';
 my $dic = Lingua::JP::Kanjidic->new("$ENV{HOME}/.kanjidic");
 
@@ -10,10 +10,10 @@ binmode(\*STDOUT, ':utf8');
 
 for my $kanji (grep { /\p{Han}/ } split //, decode_utf8("@ARGV")) {
     my $definition = $dic->lookup($kanji);
+    my $heisig = heisig_number($kanji);
 
     print $kanji;
     if ($definition) {
-        my $heisig = $definition->heiseg;
         my $skip = $definition->skip;
 
         print ' (';
@@ -37,6 +37,18 @@ for my $kanji (grep { /\p{Han}/ } split //, decode_utf8("@ARGV")) {
         print join(', ', @{ $definition->meaning || ["???"] });
     }
     else {
+        if ($heisig) {
+            print " (";
+            if (-t STDOUT) {
+                print is_learned($kanji) ? "\e[1;32m" : "\e[1;31m";
+                print $heisig;
+                print "\e[m";
+            }
+            else {
+                print $heisig;
+            }
+            print ")";
+        }
         print ': ???';
     }
 
