@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
+mkdir "/tmp/growl-precip";
+my $file = "/tmp/growl-precip/$year-$mon-$mday";
+exit if -e $file;
+
+chomp(my $precip = `/home/sartak/.versioned-bin/todays-precip`);
+system("echo $precip | /Users/sartak/.brew/bin/growlnotify -t 'Chance of precipitation today'");
+
+open my $handle, '>', $file;
+print $handle "x";
+close $handle;
+
