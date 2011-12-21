@@ -1,0 +1,10 @@
+#!/usr/bin/env perl
+use 5.14.0;
+use warnings;
+
+$_ = <>;
+my ($query, $params) = /^(.*?): (.*)$/;
+my @params = map { s/^'(\d+)'$/$1/r } split ', ', $params;
+$query =~ s/\?/shift @params/eg;
+say $query;
+
