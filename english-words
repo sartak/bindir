@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+use 5.14.0;
+use warnings;
+use DBI;
+
+my $file = "$ENV{HOME}/Documents/Anki/General.anki";
+my $dbh = DBI->connect("dbi:SQLite:dbname=" . $file);
+$dbh->{sqlite_unicode} = 1;
+
+my $sth = $dbh->prepare('
+    select word.value, source.value
+    from fields as word
+        join facts on (word.factId = facts.id)
+        join fieldModels as wordFM on (word.fieldModelId = wordFM.id)
+        join fields as source on (word.factId = source.factId)
+        join fieldModels as sourceFM on (source.fieldModelId = sourceFM.id)
+    where
+        wordFM.name = "Word"
+        and sourceFM.name = "Source"
+    order by facts.created
+;');
+$sth->execute;
+
+my @source;
+my %seen_source;
+my %words_for;
+
+while (my ($word, $source) = $sth->fetchrow_array) {
+    push @source, $source if !$seen_source{$source}++;
+    push @{ $words_for{$source} }, $word;
+}
+
+for my $source (@source) {
+    say "$source:";
+    say "    $_" for @{ $words_for{$source} };
+}
