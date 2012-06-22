@@ -1,0 +1,32 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Encode 'from_to';
+use Encode::JIS2K;
+my $data = <>;
+
+$SIG{__WARN__} = sub {};
+$| = 1;
+
+for my $encoding (
+    # utf-*
+    qw/UTF-8 UCS-2BE UCS-2LE UTF-16 UTF-16BE UTF-16LE UTF-32 UTF-32BE UTF-32LE UTF-7/,
+    # basic japanese
+    qw/euc-jp shiftjis 7bit-jis iso-2022-jp iso-2022-jp-1 MacJapanese cp932 jis0201-raw jis0208-raw jis0212-raw/,
+    # weird japanese
+    qw/euc-jisx0213 shiftjisx0123 iso-2022-jp-3 jis0213-1-raw jis0213-2-raw/
+) {
+    print "$encoding: ";
+    my $output = $data;
+    eval { from_to($output, $encoding, "UTF-8") };
+    if ($@) {
+        chomp $@;
+        print $@;
+    }
+    else {
+        chomp $output;
+        print $output;
+    }
+    print "\n\n";
+}
+
