@@ -1,0 +1,27 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Tie::Scalar::Random;
+
+my @media;
+if (@ARGV) {
+    @media = @ARGV;
+}
+else {
+    @media = map { /.*immersion-(\w+)\.txt$/; $1 } glob("$ENV{HOME}/japanese/immersion-*.txt");
+}
+
+tie my $selection, 'Tie::Scalar::Random';
+
+for my $medium (@media) {
+    my $file = "$ENV{HOME}/japanese/immersion-$medium.txt";
+    open my $handle, '<', $file
+        or die "$file: $!";
+
+    while (<$handle>) {
+        $selection = $_ if /\S/;
+    }
+}
+
+print $selection;
+

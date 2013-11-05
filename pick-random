@@ -1,0 +1,10 @@
+#!/usr/bin/env perl
+use 5.18.0;
+use Tie::Scalar::Random;
+tie my $line, 'Tie::Scalar::Random';
+
+while (<>) {
+    $line = $_ if /\S/;
+}
+
+print $line;
