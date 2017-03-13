@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Image::ExifTool 'ImageInfo';
+use File::Next;
+
+my @fields = qw/DateTimeOriginal MediaCreateDate DateCreated/;
+my $files = File::Next::files(@ARGV);
+while (my $file = $files->()) {
+    next if $file =~ /\.DS_Store$/;
+    next if $file =~ m{/\d\d\d\d-\d\d-\d\d--\d+\.\w{3,4}$};
+
+    my ($dir, $filename, $extension) = $file =~ m{(^.*?|/.*?)([^/]+\.(\w{3,4}))$}
+        or next;
+
+    my $exif = ImageInfo($file, @fields, { DateFormat => '%Y-%m-%d' });
+    my $date = (grep { defined } @$exif{@fields})[0];
+    unless ($date) {
+        warn "$file: no @fields. instead got...\n" . join(" ", sort keys %{ ImageInfo($file) });
+        next;
+    }
+    
+    my $seq = 1;
+    while (1) {
+        my $try = "$date--$seq.$extension";
+        my $path = "$dir/$try";
+        if (-e $path) {
+            $seq++;
+            next;
+        }
+
+        print "$filename => $try";
+        system('mv', $file => $path);
+        last;
+    }
+}
