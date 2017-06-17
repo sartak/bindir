@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use 5.10.1;
 use strict;
 use warnings;
 use Cwd;
@@ -33,6 +34,24 @@ if (!$is_running) {
     chdir $cwd;
     system("vagrant up");
 }
+
+# rsync over any config changes
+my $ssh_config = `vagrant ssh-config`;
+my $ssh_args = join " ", map { s/^  (\w+)\s+(.+)$/-o $1=$2/r } grep { /^\s+\S/ } split /\n/, $ssh_config;
+
+system(
+    "rsync",
+    "-Lrz",
+    "-e", "ssh $ssh_args",
+
+    "$ENV{HOME}/.vimrc",
+    "$ENV{HOME}/.vim",
+    "$ENV{HOME}/.ssh",
+    "--exclude", ".ssh/authorized_keys",
+    "$ENV{HOME}/.gitconfig",
+
+    "localhost:"
+) and die $!;
 
 exec("vagrant ssh");
 
