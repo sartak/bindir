@@ -1,2 +1,0 @@
-#!/bin/sh
-/usr/bin/ssh sartak.org "cat .irssi/fnotify 2>/dev/null; rm -f .irssi/fnotify" | while read title message; do /Users/sartak/.brew/bin/growlnotify -t "${title}" -m "${message}"; done

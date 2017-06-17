@@ -1,5 +1,0 @@
-#!/usr/bin/env perl
-use Mac::iTunes;
-my $itunes = Mac::iTunes->controller;
-$itunes->activate;
-$itunes->play;
